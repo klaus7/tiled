@@ -31,10 +31,17 @@ class TILEDSHARED_EXPORT GroupLayer : public Layer
 {
 public:
     GroupLayer(const QString &name, int x, int y);
+    ~GroupLayer();
 
-private:
-    QList<Layer*> mChildren;
+    int layerCount() const;
+    Layer *layerAt(int index) const;
+    const QList<Layer*> &layers() const { return mLayers; }
 
+    void addLayer(Layer *layer);
+    void insertLayer(int index, Layer *layer);
+    Layer *takeLayerAt(int index);
+
+    void setMap(Map *map) override;
     bool isEmpty() const override;
     QSet<SharedTileset> usedTilesets() const override;
     bool referencesTileset(const Tileset *tileset) const override;
@@ -42,7 +49,32 @@ private:
     bool canMergeWith(Layer *other) const override;
     Layer *mergedWith(Layer *other) const override;
     Layer *clone() const override;
+
+    // Enable easy iteration over children with range-based for
+    QList<Layer*>::iterator begin() { return mLayers.begin(); }
+    QList<Layer*>::iterator end() { return mLayers.end(); }
+    QList<Layer*>::const_iterator begin() const { return mLayers.begin(); }
+    QList<Layer*>::const_iterator end() const { return mLayers.end(); }
+
+protected:
+    GroupLayer *initializeClone(GroupLayer *clone) const;
+
+private:
+    void adoptLayer(Layer *layer);
+
+    QList<Layer*> mLayers;
 };
+
+
+inline int GroupLayer::layerCount() const
+{
+    return mLayers.size();
+}
+
+inline Layer *GroupLayer::layerAt(int index) const
+{
+    return mLayers.at(index);
+}
 
 } // namespace Tiled
 

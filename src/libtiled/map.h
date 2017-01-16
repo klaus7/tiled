@@ -367,6 +367,7 @@ public:
     void setNextObjectId(int nextId);
     int nextObjectId() const;
     int takeNextObjectId();
+    void initializeObjectIds(ObjectGroup &objectGroup);
 
 private:
     void adoptLayer(Layer *layer);

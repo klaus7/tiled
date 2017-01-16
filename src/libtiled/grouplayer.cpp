@@ -20,6 +20,8 @@
 
 #include "grouplayer.h"
 
+#include "map.h"
+
 namespace Tiled {
 
 GroupLayer::GroupLayer(const QString &name, int x, int y):
@@ -27,45 +29,102 @@ GroupLayer::GroupLayer(const QString &name, int x, int y):
 {
 }
 
+GroupLayer::~GroupLayer()
+{
+    qDeleteAll(mLayers);
+}
+
+void GroupLayer::addLayer(Layer *layer)
+{
+    adoptLayer(layer);
+    mLayers.append(layer);
+}
+
+void GroupLayer::insertLayer(int index, Layer *layer)
+{
+    adoptLayer(layer);
+    mLayers.insert(index, layer);
+}
+
+void GroupLayer::adoptLayer(Layer *layer)
+{
+    layer->setMap(map());
+
+    if (map())
+        if (ObjectGroup *group = layer->asObjectGroup())
+            map()->initializeObjectIds(*group);
+}
+
+Layer *GroupLayer::takeLayerAt(int index)
+{
+    Layer *layer = mLayers.takeAt(index);
+    layer->setMap(nullptr);
+    return layer;
+}
+
+void GroupLayer::setMap(Map *map)
+{
+    // todo: What about initializing object IDs?
+    Layer::setMap(map);
+    for (Layer *layer : mLayers)
+        layer->setMap(map);
+}
+
 bool GroupLayer::isEmpty() const
 {
-    // todo
-    return false;
+    return mLayers.isEmpty();
 }
 
 QSet<SharedTileset> GroupLayer::usedTilesets() const
 {
-    // todo
-    return QSet<SharedTileset>();
+    QSet<SharedTileset> tilesets;
+
+    for (const Layer *layer : mLayers)
+        tilesets |= layer->usedTilesets();
+
+    return tilesets;
 }
 
 bool GroupLayer::referencesTileset(const Tileset *tileset) const
 {
-    // todo
+    for (const Layer *layer : mLayers)
+        if (layer->referencesTileset(tileset))
+            return true;
+
     return false;
 }
 
 void GroupLayer::replaceReferencesToTileset(Tileset *oldTileset, Tileset *newTileset)
 {
-    // todo
+    const auto &children = mLayers;
+    for (Layer *layer : children)
+        layer->replaceReferencesToTileset(oldTileset, newTileset);
 }
 
-bool GroupLayer::canMergeWith(Layer *other) const
+bool GroupLayer::canMergeWith(Layer *) const
 {
-    // todo
+    // Merging group layers would be possible, but duplicating all child layers
+    // is not the right approach.
+    // todo: implement special case of reparenting child layers
     return false;
 }
 
-Layer *GroupLayer::mergedWith(Layer *other) const
+Layer *GroupLayer::mergedWith(Layer *) const
 {
-    // todo
     return nullptr;
 }
 
 Layer *GroupLayer::clone() const
 {
-    // todo
-    return nullptr;
+    return initializeClone(new GroupLayer(mName, mX, mY));
+}
+
+GroupLayer *GroupLayer::initializeClone(GroupLayer *clone) const
+{
+    Layer::initializeClone(clone);
+    for (const Layer *layer : mLayers)
+        clone->addLayer(layer->clone());
+    return clone;
 }
 
 } // namespace Tiled

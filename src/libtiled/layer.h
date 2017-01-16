@@ -110,7 +110,7 @@ public:
      * Sets the map this layer is part of. Should only be called from the
      * Map class.
      */
-    void setMap(Map *map) { mMap = map; }
+    virtual void setMap(Map *map) { mMap = map; }
 
     /**
      * Returns the x position of this layer (in tiles).
