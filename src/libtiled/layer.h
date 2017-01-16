@@ -55,7 +55,8 @@ public:
     enum TypeFlag {
         TileLayerType   = 0x01,
         ObjectGroupType = 0x02,
-        ImageLayerType  = 0x04
+        ImageLayerType  = 0x04,
+        GroupLayerType  = 0x08
     };
 
     enum { AnyLayerType = 0xFF };

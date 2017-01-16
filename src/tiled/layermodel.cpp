@@ -73,6 +73,8 @@ QVariant LayerModel::data(const QModelIndex &index, int role) const
             return mObjectGroupIcon;
         case Layer::ImageLayerType:
             return mImageLayerIcon;
+        case Layer::GroupLayerType:
+            return mGroupLayerIcon;
         }
     case Qt::CheckStateRole:
         return layer->isVisible() ? Qt::Checked : Qt::Unchecked;

@@ -70,6 +70,9 @@ OffsetLayer::OffsetLayer(MapDocument *mapDocument,
         }
         break;
     }
+    case Layer::GroupLayerType: {
+        break;
+    }
     }
 }
 

@@ -262,6 +262,9 @@ void ExportAsImageDialog::accept()
             renderer->drawImageLayer(&painter, imageLayer);
             break;
         }
+
+        case Layer::GroupLayerType:
+            break;
         }
 
         painter.translate(-layer->offset());

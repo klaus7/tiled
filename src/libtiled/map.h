@@ -237,6 +237,9 @@ public:
     int imageLayerCount() const
     { return layerCount(Layer::ImageLayerType); }
 
+    int groupLayerCount() const
+    { return layerCount(Layer::GroupLayerType); }
+
     /**
      * Returns the layer at the specified index.
      */
