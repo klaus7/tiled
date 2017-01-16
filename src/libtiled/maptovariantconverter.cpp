@@ -404,6 +404,8 @@ QVariant MapToVariantConverter::toVariant(const GroupLayer *groupLayer) const
 
     addLayerAttributes(groupLayerVariant, groupLayer);
 
+    // todo
+
     return groupLayerVariant;
 }
 

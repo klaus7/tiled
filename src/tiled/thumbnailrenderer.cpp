@@ -206,6 +206,7 @@ QImage ThumbnailRenderer::render(const QSize &size) const
             break;
         }
         case Layer::GroupLayerType: {
+            // todo: recursively render the layers within this group
             break;
         }
         }

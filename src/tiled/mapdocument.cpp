@@ -331,6 +331,7 @@ void MapDocument::resizeMap(const QSize &size, const QPoint &offset, bool remove
             break;
         }
         case Layer::GroupLayerType: {
+            // todo: recursively resize layers in this group
             break;
         }
         }

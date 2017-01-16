@@ -120,6 +120,7 @@ AdjustTileIndexes::AdjustTileIndexes(MapDocument *mapDocument,
             break;
 
         case Layer::GroupLayerType:
+            // todo: recursive
             break;
         }
     }

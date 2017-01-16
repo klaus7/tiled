@@ -453,6 +453,7 @@ void LuaPlugin::writeImageLayer(LuaTableWriter &writer,
 
 void LuaPlugin::writeGroupLayer(LuaTableWriter &, const GroupLayer *)
 {
+    // todo
 }
 
 static const char *toString(MapObject::Shape shape)

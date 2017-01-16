@@ -264,6 +264,7 @@ void ExportAsImageDialog::accept()
         }
 
         case Layer::GroupLayerType:
+            // todo: recursive
             break;
         }
 
